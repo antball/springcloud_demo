@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://git.oschina.net/didispace/config-repo-demo/
+server:
+  port: 1201
+
+
+# 也可以使用环境变量ENCRYPT_KEY来进行配置，让密钥信息外部化存储
+encrypt:
+  key: didispace
