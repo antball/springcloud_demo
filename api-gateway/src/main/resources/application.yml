@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: api-gateway
+
+server:
+  port: 1101
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
+
+
+
+# 下面整个树都非必须，如果不配置，将默认使用 http://GATEWAY:GATEWAY_PORT/想要访问的Eureka服务id的小写/** 路由到：http://想要访问的Eureka服务id的小写:该服务端口/**
+zuul:
+  routes:
+    eureka-client:
+      /eureka-client/**
+#    ignored-patterns: /eureka-client/**
+
+
+#zuul:
+#  routes:
+#    feign-consumer-hello:
+#      path: /feign-consumer/hello/**
+#      serviceId: feign-consumer-hello
+#    feign-consumer:
+#      path: /feign-consumer/**
+#      serviceId: feign-consumer
+#  ignored-patterns: /**/hello/**
+#  prefix: /myapi   #为路由规则增加前缀
+#  add-host-header: true  #不暴露真实的服务地址
+
+
+
+
+#zuul.routes.feign-consumer-hello.path=/feign-consumer/hello/**
+#zuul.routes.feign-consumer-hello.serviceId=feign-consumer-hello
+#
+#zuul.routes.feign-consumer.path=/feign-consumer/**
+#zuul.routes.feign-consumer.serviceId=feign-consumer
+
+#zuul.routes.feign-consumer=/feign-consumer/**
+
+
+#zuul.ignored-services=hello-service
+
+
+
+#  https://blog.csdn.net/u012702547/article/details/78399406
+
