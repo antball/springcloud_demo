@@ -50,8 +50,8 @@ public class ServiceProviderApplication {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Hello系统api")
-				.description("Hello系统接口文档说明")
+				.title("Hello2系统api")
+				.description("Hello2系统接口文档说明")
 				.contact(new Contact("antball", "", "fsdafsf@gmail.com"))
 				.version("1.0")
 				.build();

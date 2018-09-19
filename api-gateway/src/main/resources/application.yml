@@ -10,14 +10,31 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:1001/eureka/
 
+#zuul:
+#  SendErrorFilter:
+#    post:
+#      disable: true
+
 
 
 # 下面整个树都非必须，如果不配置，将默认使用 http://GATEWAY:GATEWAY_PORT/想要访问的Eureka服务id的小写/** 路由到：http://想要访问的Eureka服务id的小写:该服务端口/**
 zuul:
+#  retryable: false  # 关闭Hystrix重试机制
+#  sensitiveHeaders:  #传递敏感的头信息
+#  add-host-header: true #防止页面重定向后跳转到上游服务器上去
   routes:
+#    local: #在API网关上做一点业务逻辑
+#      path: /local/**
+#      url: forward:/local
     eureka-client:
       /eureka-client/**
-#    ignored-patterns: /eureka-client/**
+    eureka-client2:
+      /eureka-client2/**
+    eureka-consumer-feign:
+      path: /feign-consumer/**
+      serviceId: eureka-consumer-feign
+
+#    ignored-patterns: /eureka-client/**  # 只对服务消费者提供服务，不对外提供服务  默认的路由规则，则Zuul也会自动为hello-service创建映射规则 /**/hello/**
 
 
 #zuul:
@@ -49,4 +66,8 @@ zuul:
 
 
 #  https://blog.csdn.net/u012702547/article/details/78399406
+
+#  https://blog.csdn.net/qq_38493490/article/details/81001927
+
+#  https://mp.weixin.qq.com/s/BWhh2HD0VVqzypxkBFU7eg
 

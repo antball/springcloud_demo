@@ -2,12 +2,15 @@ package com.forezp.apigateway;
 
 import com.forezp.apigateway.filter.AccessFilter;
 import com.forezp.apigateway.filter.ErrorFilter;
+import com.forezp.apigateway.filter.ThrowExceptionFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
 @EnableZuulProxy
+@EnableEurekaClient
 @SpringBootApplication
 public class ApiGatewayApplication {
 
@@ -15,15 +18,22 @@ public class ApiGatewayApplication {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
-    @Bean
-    public AccessFilter accessFilter() {
-        return new AccessFilter();
-    }
+//    @Bean
+//    public AccessFilter accessFilter() {
+//        return new AccessFilter();
+//    }
+
+//    @Bean
+//    public ErrorFilter errorFilter() {
+//        return new ErrorFilter();
+//    }
+
 
     @Bean
-    public ErrorFilter errorFilter() {
-        return new ErrorFilter();
+    public ThrowExceptionFilter exceptionFilter() {
+        return new ThrowExceptionFilter();
     }
+
 
 
 

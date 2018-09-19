@@ -34,6 +34,18 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+
+
+
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -59,6 +71,113 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!--<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>eureka-client:0.0.2</imageName>
+					<baseImage>java</baseImage>
+					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>-->
+
+			<!--<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>eureka-client:0.0.2</imageName>
+					<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>-->
+
+
+			<!--用户只需执行mvn package ，就会自动执行mvn docker:build-->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!--<imageName>eureka-client:0.0.2</imageName>-->
+					<imageName>192.168.148.129:8082/eurake-client:0.02</imageName>
+
+					<!--<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>-->
+
+					<baseImage>java</baseImage>
+					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+
+					<!--推送镜像到私有仓库-->
+					<!--只需要将imageName指定成类似于如下的形式-->
+					<!--<imageName>localhost:5000/eureka-client:0.0.2</imageName>-->
+
+					<!--也可借助imageTags元素更为灵活地指定镜像名称和标签 此时imageName后面不带标签-->
+					<!--<imageTags>
+						<imageTag>0.0.5</imageTag>
+						<imageTag>latest</imageTag>
+					</imageTags>-->
+
+					<!--在执行构建命令时，使用dockerImageTags参数指定标签名称-->
+					<!--mvn clean package docker:build -DpushImageTags -DdockerImageTags=latest -DdockerImageTags=another-tag-->
+
+					<!-- optionally overwrite tags every time image is built with docker:build -->
+					<!--覆盖构建相同标签的镜像-->
+					<forceTags>true</forceTags>
+
+
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+
+					<!--
+						push到Docker Hub
+
+						settings.xml 添加
+					<server>
+						<id>docker-hub</id>
+						<username>你的DockerHub用户名</username>
+						<password>你的DockerHub密码</password>
+						<configuration>
+							<email>你的DockerHub邮箱</email>
+						</configuration>
+					</server>-->
+
+					<!-- 与maven配置文件settings.xml中配置的server.id一致，用于推送镜像 -->
+					<!--mvn clean package docker:build  -DpushImage   -->
+					<serverId>docker-nexus</serverId>
+
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 
